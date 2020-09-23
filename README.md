@@ -38,6 +38,6 @@
 
 
 ### Demonstrações:
-<img width=250 src="/src/termux.gif"/><img width=250 src="/src/qpython.gif"/>
+<img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
 ![Example](/src/adb.gif)
 
