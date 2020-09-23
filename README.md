@@ -1,2 +1,2 @@
 # QPlugin
-Plugin para executar ações do android por python3 ou QPython3
+Plugin para executar ações do android por Python3 ou QPython3
