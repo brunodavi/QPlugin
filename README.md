@@ -1,9 +1,9 @@
 # QPlugin <img width=50 src="/src/icon.png"/>
+* Usado para executar ações do android pelo Python3
 
 <img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
-![Example](/src/adb.gif)
+![example](/src/adb.gif)
 
-* Usado para executar ações do android pelo Python3
 
 ### Como usar:
 
