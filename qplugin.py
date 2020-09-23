@@ -3,6 +3,11 @@ try:
     droid = Android()
 except:
     from os import popen
+    
+    
+def toolcheck(name):
+    from shutil import which
+    return which(name) is not None
 
 
 def run(action='ACTION', parameters={'qpy': 'Test'}):
@@ -29,10 +34,17 @@ def run(action='ACTION', parameters={'qpy': 'Test'}):
 
                 par += f'--esal {k} {v} '
             else:
-                par += f'--es {k} {str(v)} '
+                par += f'--es {k} {v} '
 
         parameters = par[:-1]
-        popen(f"am broadcast --user 0 -a {action} {parameters}")
+        
+        
+        intent = f"am broadcast --user 0 -a {action} {parameters}"
+        
+        if toolcheck('am'):
+            popen(intent)
+        else:
+            popen(f"adb shell {intent}")        
 
 
 def beep(frequency='8000', duration='1000', amplitude='50', stream='media'):
@@ -69,4 +81,3 @@ def toast(text, long=False):
     """
     
     run('TOAST', locals())
-
