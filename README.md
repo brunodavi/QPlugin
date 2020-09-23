@@ -9,6 +9,7 @@ Plugin para executar ações do android por Python3
 <img src="/src/notify.png">
 
 ### Exemplos:
-![QPython](/src/qpython.gif) ![Termux](/src/termux.gif)
+<img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>  
+![Example](/src/adb.gif)
 
 * Além de poder ser usado qualquer terminal, também funciona através do adb
