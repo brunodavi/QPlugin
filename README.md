@@ -1,4 +1,8 @@
-# QPlugin <img width=50 src="/src/icon.png"/> 
+# QPlugin <img width=50 src="/src/icon.png"/>
+
+<img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
+![Example](/src/adb.gif)
+
 * Usado para executar ações do android pelo Python3
 
 ### Como usar:
@@ -35,9 +39,4 @@
 
     # Executa uma mensagem com o texto: Exemplo 4
     adb shell am broadcast --user 0 -a TOAST --es text 'Exemplo 4' --es long True
-
-
-### Demonstrações:
-<img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
-![Example](/src/adb.gif)
 
