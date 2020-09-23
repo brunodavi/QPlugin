@@ -10,7 +10,7 @@
 ### Como funciona?
 
 * O terminal envia um broadcast para o QPlugin App
-* O qplugin.py é usado como blibioteca das ações disponíveis
+* O qplugin.py é usado como biblioteca das ações disponíveis
 
 
 ### Exemplo com python3:
