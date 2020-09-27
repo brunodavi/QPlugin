@@ -1,6 +1,14 @@
 # QPlugin <img width=50 src="/src/icon.png"/>
 * Usado para executar ações do android pelo Python3
 
+### Tarefas
+
+* Beep
+* Toast
+* [NEW] Morce
+* [NEW] Notify
+* [NEW] NotifyCancel
+
 <img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
 
 
@@ -27,10 +35,4 @@
     pars = {'text': 'Exemplo 2', 'long': 1}
     run('Toast', pars)
 
-### Tarefas
 
-* Beep
-* Toast
-* [NEW] Morce
-* [NEW] Notify
-* [NEW] NotifyCancel
