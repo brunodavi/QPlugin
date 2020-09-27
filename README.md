@@ -12,29 +12,25 @@
 
 ### Como funciona?
 
-* O terminal envia um broadcast para o QPlugin App
-* O qplugin.py é usado como biblioteca das ações disponíveis
+* O python envia instruções pelo arquivo out.txt para o QPlugin.apk executar
+* O qplugin é usado como biblioteca das ações disponíveis
 
 
 ### Exemplo com python3:
 
-    from qplugin import toast, run
+    from qplugin.tasks import Toast, run
   
     # Executa uma mensagem com o texto: Exemplo 1
-    toast('Exemplo 1')
+    Toast('Exemplo 1')
   
     # Executa uma mensagem com o texto: Exemplo 2
-    pars = {'text': 'Exemplo 2', 'long': True}
-    run('TOAST', pars)
+    pars = {'text': 'Exemplo 2', 'long': 1}
+    run('Toast', pars)
 
+### Tarefas
 
-### Exemplo com terminal android:
-
-    # Executa uma mensagem com o texto: Exemplo 3
-    am broadcast --user 0 -a TOAST --es text 'Exemplo 3' --es long False
-
-
-### Exempo com adb:
-
-    # Executa uma mensagem com o texto: Exemplo 4
-    adb shell am broadcast --user 0 -a TOAST --es text 'Exemplo 4' --es long True
+* Beep
+* Toast
+* [NEW] Morce
+* [NEW] Notify
+* [NEW] NotifyCancel
