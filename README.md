@@ -2,7 +2,6 @@
 * Usado para executar ações do android pelo Python3
 
 <img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
-![example](/src/adb.gif)
 
 
 ### Como usar:
