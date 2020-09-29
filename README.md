@@ -3,14 +3,6 @@
 
 <img width=250 src="/src/termux.gif"/> <img width=250 src="/src/qpython.gif"/>
 
-### Tarefas
-
-* Beep
-* Toast
-* [NEW] Morce
-* [NEW] Notify
-* [NEW] NotifyCancel
-
 
 ### Como usar:
 
@@ -22,6 +14,15 @@
 
 * O python envia instruções pelo arquivo out.txt para o QPlugin.apk executar
 * O qplugin é usado como biblioteca das ações disponíveis
+
+
+### Tarefas
+
+* Beep
+* Toast
+* [NEW] Morce
+* [NEW] Notify
+* [NEW] NotifyCancel
 
 
 ### Exemplo com python3:
