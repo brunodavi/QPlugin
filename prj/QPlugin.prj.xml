@@ -710,7 +710,7 @@ NotifyCancel()</Str>
 		<Action sr="act2" ve="7">
 			<code>523</code>
 			<Str sr="arg0" ve="3">Serviço iniciado</Str>
-			<Str sr="arg1" ve="3">QPlugin foi iniciado, para começar a usá-lo exporte o projeto QPlugin na sua memória interna</Str>
+			<Str sr="arg1" ve="3">Para começar a usá-lo, exporte o projeto QPlugin na sua memória interna.</Str>
 			<Str sr="arg10" ve="3"/>
 			<Str sr="arg11" ve="3"/>
 			<Img sr="arg2" ve="2"/>
@@ -772,7 +772,7 @@ NotifyCancel()</Str>
 		<Action sr="act4" ve="7">
 			<code>523</code>
 			<Str sr="arg0" ve="3">Serviço iniciado</Str>
-			<Str sr="arg1" ve="3">QPlugin foi iniciado, para sair clique no botão abaixo</Str>
+			<Str sr="arg1" ve="3">Para desligar, clique no botão abaixo.</Str>
 			<Str sr="arg10" ve="3"/>
 			<Str sr="arg11" ve="3"/>
 			<Img sr="arg2" ve="2"/>
