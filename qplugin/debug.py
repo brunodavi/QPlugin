@@ -15,4 +15,3 @@ def showLog(mask=r'{p1} {p2} {p3} {p4} {p5} {p6}', **filter):
 	
 	for p1, p2, p3, p4, p5, p6 in runLog(**filter):
 		print(eval(f'f"{mask}"'))
-
