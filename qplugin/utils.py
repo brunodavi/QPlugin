@@ -42,7 +42,6 @@ def sendArgs(path, act, args):
 	
 	
 	def add_row(table, row, val):
-		print(val)
 		ex.execute(f'insert into {table}({row}) values("{val}")')
 		
 		
