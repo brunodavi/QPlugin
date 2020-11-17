@@ -127,7 +127,26 @@ class Alert:
 	        
 	        wait   (bool): Esperar até terminar                       
 	    """
-      	
+	
+	    return run('Say', locals())
+	
+	
+	def SayToFile(self, text, local, voice='default:default', pitch=5, speed=5, wait=True):
+	    """
+	    
+	    Fala o que for digitado
+	    
+	    Args:
+	        text  (str): Texto do que é falado
+	        local (str): Local do arquivo
+	        voice (str): Voz do programa
+	        
+	        pitch (int): Tonalidade da voz       [   1 - 10   ]
+	        speed (int): Velocidade da voz       [   1 - 10   ]
+	         
+	        wait  (bool): Esperar até terminar                       
+	    """
+	
 	    return run('SayToFile', locals())
 	
 	
