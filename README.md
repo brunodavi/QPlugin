@@ -1,4 +1,4 @@
-# QPlugin <img width="5%" src="/src/icon.png"/>
+# QPlugin <img width="50" src="/src/icon.png"/>
 
 ### Como usar:
 
