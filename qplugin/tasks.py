@@ -154,15 +154,13 @@ class Alert:
 	    return run('Flash', locals())
 
 	
-	def Vibrate(self, action=None):
+	def Vibrate(self, duration):
 	    """
 	    
 	    Vibra o dispositivo
 	    
 	    Args:
-	        action (str):  True: Liga a lanterna
-	                      False: Desliga a lanterna
-	                       None: Alterna entre ligado/desligado
+	        duration (int): Duração da vibração
 	    """
 	
 	    return run('Vibrate', locals())
