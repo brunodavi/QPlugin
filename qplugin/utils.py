@@ -32,7 +32,9 @@ def getValues(dic: dict):
 	
 
 def sendArgs(path, act, args):
+	from time import sleep
 	from sqlite3 import connect
+	
 	db = connect(path)
 	ex = db.cursor()
 	
@@ -50,6 +52,7 @@ def sendArgs(path, act, args):
 			ex.execute(f'select {rows} from {table}')
 			rows_list = ex.fetchall()
 			if len(rows_list) > 0:
+				sleep(0.100)
 				return rows_list
 	
 	
