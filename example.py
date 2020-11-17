@@ -1,5 +1,6 @@
 from qplugin.tasks import Alert
 
 alert = Alert()
-alert.Toast('Testando...')
-alert.Beep(duration=300)
+
+alert.Toast('Hello, World!!!')
+alert.Vibrate(100)
