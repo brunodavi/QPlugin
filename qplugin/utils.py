@@ -19,10 +19,15 @@ def edfile(path, write=None, append=False, encoding='utf-8'):
 
 
 def getValues(dic: dict):
+	from re import sub
+	
 	qpy = rsh('echo $PATH').find('qpython')
 	isqpy = qpy > -1
 	
-	del dic['self']
+	cat = str(dic['self'])
+	cat = sub(r'<(.+\.){2}(\S+)[^>]+>', r'\2', cat)
+	
+	dic['self'] = cat
 	vals = tuple(dic.values())
 	
 	if isqpy:
@@ -59,12 +64,15 @@ def sendArgs(path, act, args):
 	# Delete all rows in all tables
 	for r in ('Action', 'Args', 'Result'):
 		del_rows(r)
+		
+	# Add Class
+	add_row('Action', 'act', args[0])
 	
 	# Add Action
 	add_row('Action', 'act', act)
 	
 	# Add Args
-	for arg in args:
+	for arg in args[1:]:
 		add_row('Args', 'arg', arg)
 	
 	db.commit()
