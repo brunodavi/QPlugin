@@ -3,7 +3,7 @@ from .import *
 
 def run(action, pars):
 	vals = getValues(pars)
-	return sendArgs(DATABASE, action, vals)
+	return sendArgs('database.db', action, vals)
 
 
 class Alert:
