@@ -19,22 +19,19 @@ def edfile(path, write=None, append=False, encoding='utf-8'):
 
 
 def getValues(dic: dict):
-	from re import sub
+	from re import findall
+
+	regex = r'[A-Z]\S+'
+	string = str(dic['self'])
 	
-	qpy = rsh('echo $PATH').find('qpython')
-	isqpy = qpy > -1
-	
-	cat = str(dic['self'])
-	cat = sub(r'<(.+\.){2}(\S+)[^>]+>', r'\2', cat)
-	
-	dic['self'] = cat
+	dic['self'] = findall(regex, string)[0]
 	vals = tuple(dic.values())
-	
-	if isqpy:
+
+	if tuple(dic)[0] != 'self':
 		vals = vals[::-1]
-			
+
 	return vals
-	
+
 
 def sendArgs(path, act, args):
 	from time import sleep
