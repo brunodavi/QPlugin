@@ -3,7 +3,8 @@ from .import *
 
 def run(action, pars):
 	vals = getValues(pars)
-	return sendArgs(DATABASE, action, vals)
+	return sendArgs(DATABASE, actiif len(pattern) == 1:
+			patternon, vals)
 
 
 class Alert:
@@ -192,3 +193,22 @@ class Alert:
 		pattern = pattern[1:-1]
 
 		return run('Vibrate', locals())
+
+
+class App:
+
+
+	def Info(self, pkg, igpkg, igunpkg=False, details=False):
+		"""
+
+		Obtém mais informações de apps
+
+		Args:
+			pkg      (str): Pacotes/Nome de Apps
+			igpkg    (str): Ignorar pacotes
+
+			igunpkg (bool): Ignorar pacotes não inicializáveis
+			details (bool): Mostrar todos os detalhes
+		"""
+
+		return run('Info', locals())
