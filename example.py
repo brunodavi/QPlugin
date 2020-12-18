@@ -1,4 +1,5 @@
-from qplugin.tasks import Alert
+from qplugin.tasks import App
 
-alert = Alert()
-alert.Vibrate(100,100)
+app = App()
+
+app.Info('Chrome')
