@@ -1,6 +1,30 @@
+def reg(string, regex, replace=None):
+    """
+
+    Find and replace with regex
+
+    Args:
+        string  (str):      Text to search
+        regex   (str):      Regex to search
+        replace (str):      Replace text groups are replaced with \1 or $1
+
+    Return (str | list):
+        Returns the list with the found regex or a replaced string
+    """
+
+    from re import findall, sub
+
+    if replace is None:
+        return findall(regex, string)
+
+    else:
+        replace = sub(r'\$(\d+)', r'\\\1', replace)
+        return sub(regex, replace, string)
+
+
 def rsh(cmd):
-	from subprocess import getoutput
-	return getoutput(cmd)
+	from subprocess import getstatusoutput
+	return getstatusoutput(cmd)
 
 
 def edfile(path, write=None, append=False, encoding='utf-8'):
@@ -19,12 +43,11 @@ def edfile(path, write=None, append=False, encoding='utf-8'):
 
 
 def getValues(dic: dict):
-	from re import findall
 
 	regex = r'[A-Z]\S+'
 	string = str(dic['self'])
 	
-	dic['self'] = findall(regex, string)[0]
+	dic['self'] = reg(string, regex)[0]
 	vals = tuple(dic.values())
 
 	if tuple(dic)[0] != 'self':
@@ -33,24 +56,26 @@ def getValues(dic: dict):
 	return vals
 
 
-def sendArgs(path, act, args):
+def sendArgs(database, act, args, wait=True):
 	from time import sleep
 	from sqlite3 import connect
+
+	rsh(f'rm {database}')
 	
-	db = connect(path)
+	db = connect(database)
 	ex = db.cursor()
 	
-	
-	def del_rows(table):
-		ex.execute(f'delete from {table}')
-	
-	
+
+	def create_table(table, row):
+		ex.execute(f'create table "{table}" ("{row}" TEXT)')
+
+
 	def add_row(table, row, val):
 		ex.execute(f'insert into {table}({row}) values("{val}")')
 		
 		
 	def get_rows(table, rows):
-		while True:
+		while wait:
 			ex.execute(f'select {rows} from {table}')
 			rows_list = ex.fetchall()
 			if len(rows_list) > 0:
@@ -58,9 +83,9 @@ def sendArgs(path, act, args):
 				return rows_list
 	
 	
-	# Delete all rows in all tables
-	for r in ('Action', 'Args', 'Result'):
-		del_rows(r)
+	# Create all rows in all tables
+	for t, r in [('Action', 'act'), ('Args', 'arg'), ('Result', 'result')]:
+		create_table(t, r)
 		
 	# Add Class
 	add_row('Action', 'act', args[0])
@@ -73,7 +98,6 @@ def sendArgs(path, act, args):
 		add_row('Args', 'arg', arg)
 	
 	db.commit()
-	
 	
 	# Get result
 	return get_rows('Result', 'result')

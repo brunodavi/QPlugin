@@ -191,7 +191,7 @@ class Alert:
 		pattern = pattern.replace(' ', '')
 		pattern = pattern[1:-1]
 
-		print('Vibrate', locals())
+		return run('Vibrate', locals())
 
 
 class App:
