@@ -3,8 +3,7 @@ from .import *
 
 def run(action, pars):
 	vals = getValues(pars)
-	return sendArgs(DATABASE, actiif len(pattern) == 1:
-			patternon, vals)
+	return sendArgs(DATABASE, action, vals)
 
 
 class Alert:
@@ -192,7 +191,7 @@ class Alert:
 		pattern = pattern.replace(' ', '')
 		pattern = pattern[1:-1]
 
-		return run('Vibrate', locals())
+		('Vibrate', locals())
 
 
 class App:
