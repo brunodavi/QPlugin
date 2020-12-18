@@ -173,13 +173,18 @@ class Alert:
 	    return run('Flash', locals())
 
 	
-	def Vibrate(self, duration):
-	    """
-	    
-	    Vibra o dispositivo
-	    
-	    Args:
-	        duration (int): Duração da vibração
-	    """
-	
-	    return run('Vibrate', locals())
+	def Vibrate(self, *pattern):
+		"""
+
+		Padrões de Vibres
+
+		Args:
+			pattern (tuple): tempo_de_espera,tempo_de_vibre
+		"""
+		
+		pattern = str(pattern)
+
+		pattern = pattern.replace(' ', '')
+		pattern = pattern[1:-1]
+
+		return run('Vibrate', locals())
