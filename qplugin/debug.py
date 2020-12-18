@@ -1,7 +1,7 @@
 from .import *
 
 def log():
-	return edfile(RUNLOG)
+	return edfile('log/runlog.txt')
 
 
 def runLog(time=r'\d+.\d+.\d+', process='[A-Z]', status=r'\w+', task=r'[^\n]+'):
