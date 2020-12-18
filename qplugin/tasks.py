@@ -181,7 +181,11 @@ class Alert:
 		Args:
 			pattern (tuple): tempo_de_espera,tempo_de_vibre
 		"""
-		
+
+		if len(pattern) == 1:
+			pattern = (0,pattern[0])
+
+
 		pattern = str(pattern)
 
 		pattern = pattern.replace(' ', '')
