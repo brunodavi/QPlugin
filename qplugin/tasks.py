@@ -197,7 +197,7 @@ class Alert:
 class App:
 
 
-	def Info(self, pkg, igpkg, igunpkg=False, details=False):
+	def Info(self, pkg, igpkg='', igunpkg=False, details=False):
 		"""
 
 		Obtém mais informações de apps
