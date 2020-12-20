@@ -61,7 +61,6 @@ class Alert:
 	        
 	        long (int): 1: A mensagem demora mais
 	                    0: A mensagem demora menos
-	        
 	    """
 	    
 	    return run('Toast', locals())
@@ -218,17 +217,17 @@ class Alert:
 class App:
 
 
-	def Info(self, pkg, igpkg='', igunpkg=False, details=False):
+	def Info(self, package, ignore='', unlanced=False, details=False):
 		"""
 
 		Obtém mais informações de apps
 
 		Args:
-			pkg      (str): Pacotes/Nome de Apps
-			igpkg    (str): Ignorar pacotes
+			package   (str): Pacotes/Nome de Apps
+			ignore    (str): Pacotes Ignorados
 
-			igunpkg (bool): Ignorar pacotes não inicializáveis
-			details (bool): Mostrar todos os detalhes
+			unlanced (bool): Iniciar pacotes não inicializáveis
+			details  (bool): Mostrar todos os detalhes
 		"""
 
 		return run('Info', locals())

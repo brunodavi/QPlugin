@@ -1,6 +1,7 @@
 from qplugin.tasks import App, Alert
 
+Alert().Beep(10000, duration=250)
+app_info = App().Info('Youtube')
 
-app = App()
-taskerInfo = app.Info('Tasker', details=True)
-print(taskerInfo)
+print(app_info)
+
