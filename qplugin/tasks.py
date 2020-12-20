@@ -3,7 +3,28 @@ from .import *
 
 def run(action, pars):
 	vals = getValues(pars)
-	return sendArgs('database.db', action, vals)
+
+	if isDroid:
+		return SQL(DATABASE, action, vals)
+
+	elif len(devices):
+		db = 'tmp.db'
+
+		SQL(db, action, vals, '012')
+
+		rsh(f'adb push {db} {DATABASE}')
+		size = getSize(DATABASE)
+
+		rsh(f'adb shell am broadcast -a QPlugin')
+		
+		while size == getSize(DATABASE):
+			continue
+
+		rsh(f'adb pull {DATABASE} {db}')
+		return SQL(db, action, vals, '3')
+
+	else:
+		exit('Nenhum dispositivo encontrado')
 
 
 class Alert:

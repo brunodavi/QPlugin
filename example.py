@@ -1,4 +1,6 @@
-from qplugin.tasks import Alert
+from qplugin.tasks import App, Alert
 
-alert = Alert()
-alert.Vibrate(100)
+
+app = App()
+taskerInfo = app.Info('Tasker', details=True)
+print(taskerInfo)

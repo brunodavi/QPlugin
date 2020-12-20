@@ -1,6 +1,6 @@
 from .utils import *
 
-"""
+
 # Vars
 
 APP = 'QPlugin'
@@ -10,7 +10,7 @@ LOG = f'{LOCAL}/log'
 RUNLOG = f'{LOG}/runlog.txt'
 
 DATABASE = f'{LOCAL}/database.db'
-"""
+
 
 # Checker
 

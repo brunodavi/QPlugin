@@ -27,6 +27,12 @@ def rsh(cmd):
 	return getstatusoutput(cmd)
 
 
+def getSize(path_file):
+    size = rsh(f'adb shell wc -c {path_file}')[1]
+    size = reg(size, '\d+')[0]
+
+    return int(size)
+
 def edfile(path, write=None, append=False, encoding='utf-8'):
     if write == None:
         file = open(path, 'r', encoding=encoding)
@@ -56,50 +62,49 @@ def getValues(dic: dict):
 	return vals
 
 
-def sendArgs(database, act, args, wait=True):
-	from time import sleep
-	from sqlite3 import connect
-
-	rsh(f'rm {database}')
-	
-	db = connect(database)
-	ex = db.cursor()
+def SQL(database, act, args, modes='0123'):
+    from time import sleep
+    from sqlite3 import connect
 	
 
-	def create_table(table, row):
-		ex.execute(f'create table "{table}" ("{row}" TEXT)')
+    def create_table(table, row):
+	    ex.execute(f'create table "{table}" ("{row}" TEXT)')
 
 
-	def add_row(table, row, val):
-		ex.execute(f'insert into {table}({row}) values("{val}")')
-		
-		
-	def get_rows(table, rows):
-		while wait:
-			ex.execute(f'select {rows} from {table}')
-			rows_list = ex.fetchall()
-			if len(rows_list) > 0:
-				sleep(0.100)
-				return rows_list
+    def add_row(table, row, val):
+        ex.execute(f'insert into {table}({row}) values("{val}")')
 	
-	
-	# Create all rows in all tables
-	for t, r in [('Action', 'act'), ('Args', 'arg'), ('Result', 'result')]:
-		create_table(t, r)
-		
-	# Add Class
-	add_row('Action', 'act', args[0])
-	
-	# Add Action
-	add_row('Action', 'act', act)
-	
-	# Add Args
-	for arg in args[1:]:
-		add_row('Args', 'arg', arg)
-	
-	db.commit()
-	
-	# Get result
-	return get_rows('Result', 'result')
-	
-	
+
+    def get_row(table, rows):
+        while True:
+            ex.execute(f'select {rows} from {table}')
+            rows_list = ex.fetchall()
+            if len(rows_list) > 0:
+                sleep(0.100)
+                return rows_list
+
+
+    if '0' in modes:
+        rsh(f'rm {database}')
+
+    db = connect(database)
+    ex = db.cursor()
+
+    if '1' in modes:
+        
+        for t, r in [('Action', 'act'), ('Args', 'arg'), ('Result', 'result')]:
+            create_table(t, r)
+
+    if '2' in modes:
+        add_row('Action', 'act', args[0])
+        add_row('Action', 'act', act)
+
+        for arg in args[1:]:
+            add_row('Args', 'arg', arg)
+
+    if '1' in modes or '2' in modes:
+        db.commit()
+
+    if '3' in modes:
+        row = get_row('Result', 'result')[0][0]
+        return eval(row)
