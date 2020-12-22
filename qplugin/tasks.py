@@ -271,7 +271,7 @@ class App:
 		return run('Kill', locals())
 
 
-	def Launch(self, package, data='None', exclude_recents=False, new_start=False):
+	def Launch(self, package, data=None, exclude_recents=False, new_start=False):
 		"""
 
 		Iniciar uma aplicação
@@ -285,3 +285,23 @@ class App:
 		"""
 
 		return run('Launch', locals())
+
+	
+	def List(self, mode, match=''):
+		"""
+
+		Lista informações de aplicações
+
+		Args:
+			mode  (str): Tipo de informação listada	[ Package  ]
+													[ App      ]
+													[ Activity ]
+													[ Receiver ]
+													[ Services ]
+													[ Provider ]
+			
+			match (str): Lista usando glob (!/*)
+		"""
+
+		return run('List', locals())
+		
