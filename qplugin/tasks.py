@@ -256,3 +256,16 @@ class App:
 		"""
 		
 		return run('Home', locals())
+
+
+	def Kill(self, package, root=False):
+		"""
+
+		Fechar um app a força
+
+		Args:
+			package  (str): Pacote do aplicativo
+			root    (bool): Usar root para fechar
+		"""
+
+		return run('Kill', locals())
