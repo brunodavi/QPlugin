@@ -269,3 +269,19 @@ class App:
 		"""
 
 		return run('Kill', locals())
+
+
+	def Launch(self, package, data='None', exclude_recents=False, new_start=False):
+		"""
+
+		Iniciar uma aplicação
+
+		Args:
+			package          (str): Pacote/Classes de Apps
+			data             (str): Dados de entrada
+			
+			exclude_recents (bool): Excluir dos recentes
+			new_start       (bool): Nova inicialização
+		"""
+
+		return run('Launch', locals())
