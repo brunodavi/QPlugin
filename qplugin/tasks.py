@@ -8,7 +8,7 @@ def run(action, pars):
 		return SQL(DATABASE, action, vals)
 
 	elif len(devices):
-		db = 'tmp.db'
+		db = 'database.db'
 
 		SQL(db, action, vals, '012')
 
@@ -231,3 +231,16 @@ class App:
 		"""
 
 		return run('Info', locals())
+
+	
+	def Camera(self, status=None):
+		"""
+
+		Ativa/Desativa a Câmera
+
+		Args:
+			status (bool): [ True=Ativa | False=Desativa | None=Alterna ]
+		"""
+
+		return run('Camera', locals())
+		
