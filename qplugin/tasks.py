@@ -287,7 +287,7 @@ class App:
 		return run('Launch', locals())
 
 	
-	def List(self, mode, match=''):
+	def List(self, mode, match=None):
 		"""
 
 		Lista informações de aplicações
@@ -304,4 +304,3 @@ class App:
 		"""
 
 		return run('List', locals())
-		
