@@ -243,4 +243,16 @@ class App:
 		"""
 
 		return run('Camera', locals())
+
+	
+	def Home(self, page=0, launcher=None):
+		"""
+
+		Inícia um launcher
+
+		Args:
+			page     (int): Página de início
+			launcher (str): Launcher que será inicializado
+		"""
 		
+		return run('Home', locals())

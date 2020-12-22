@@ -1,5 +1,4 @@
-from qplugin.tasks import App, Alert
+from qplugin.tasks import App
 
-Alert().Beep(10000, duration=250)
-out = App().Camera()
-
+out = App().Home()
+print(out)
