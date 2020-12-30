@@ -14,8 +14,6 @@ def run(action, pars):
 
 		rsh(f'adb push {db} {DATABASE}')
 		size = getSize(DATABASE)
-
-		rsh(f'adb shell am broadcast -a QPlugin')
 		
 		while size == getSize(DATABASE):
 			continue
