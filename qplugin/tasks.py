@@ -292,11 +292,11 @@ class App:
 
 		Args:
 			mode  (str): Tipo de informação listada	[ Package  ]
-													[ App      ]
-													[ Activity ]
-													[ Receiver ]
-													[ Services ]
-													[ Provider ]
+								[ App      ]
+								[ Activity ]
+								[ Receiver ]
+								[ Services ]
+								[ Provider ]
 			
 			match (str): Lista usando glob (!/*)
 		"""
