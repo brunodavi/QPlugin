@@ -63,7 +63,6 @@ def getValues(dic: dict):
 
 
 def SQL(database, act, args, modes='0123'):
-    from time import sleep
     from sqlite3 import connect
 	
 
@@ -80,7 +79,6 @@ def SQL(database, act, args, modes='0123'):
             ex.execute(f'select {rows} from {table}')
             rows_list = ex.fetchall()
             if len(rows_list) > 0:
-                sleep(0.100)
                 return rows_list
 
 
