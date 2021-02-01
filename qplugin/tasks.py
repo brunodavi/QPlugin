@@ -550,3 +550,40 @@ class Audio:
 		"""
 
 		return run('System', locals())
+
+
+class Code:
+
+
+	def ADB(self, command, ip, port, timeout=1):
+		"""
+
+		Executa comandos do adb shell
+
+		Args:
+			command (str): Commando (ex: ls /sdcard/)
+			     ip (str): IP do alvo (ex: 0.0.0.0)
+
+			    port(int): Porta conectada (ex: 5555)
+			timeout (int): Tempo de espera
+
+		Return: output (str)
+		"""
+
+		return run('ADB', locals())
+
+
+	def JavaScript(self, code, lib='', timeout=45):
+		"""
+
+		Executa JavaScript do Tasker
+
+		Args:
+			code    (str): Código JavaScript
+			lib     (str): Bibliotecas
+			timeout (int): Tempo de Espera
+
+		Return: only %return
+		"""
+
+		return run('JavaScript', locals())

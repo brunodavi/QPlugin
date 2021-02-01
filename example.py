@@ -1,9 +1,5 @@
 #!/usr/bin/python3
 
-from qplugin.tasks import Audio
-
-audio = Audio()
-
-for i in range(10):
-    audio.Notify(i, True, True)
+from qplugin.tasks import Code
+print(Code().JavaScript("setLocal('return', 0)"))
 
