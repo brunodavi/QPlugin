@@ -227,7 +227,7 @@ class App:
 			unlanced (bool): Iniciar pacotes não inicializáveis
 			details  (bool): Mostrar todos os detalhes
 
-		
+		Return: informações de apps (dict)
 		"""
 
 		return run('Info', locals())
@@ -239,7 +239,7 @@ class App:
 		Ativa/Desativa a Câmera
 
 		Args:
-			status (bool): [ True=Ativa | False=Desativa | None=Alterna ]
+			status (bool): [ True=ON | False=OFF | None=TOOGLE ]
 		"""
 
 		return run('Camera', locals())
@@ -302,6 +302,8 @@ class App:
 			[ Provider ]
 			
 			match (str): Lista usando glob (!/*)
+
+		Return: Lista (list)
 		"""
 
 		return run('List', locals())
@@ -339,7 +341,7 @@ class App:
 									[ version    ]
 									[ this       ]
 
-		Return: str
+		Return: Infromações de Apps/Calendário (str)
 		"""
 
 		return run('Test', locals())
@@ -567,7 +569,7 @@ class Code:
 			    port(int): Porta conectada (ex: 5555)
 			timeout (int): Tempo de espera
 
-		Return: output (str)
+		Return: Saída do ADB (str)
 		"""
 
 		return run('ADB', locals())
@@ -583,7 +585,7 @@ class Code:
 			lib     (str): Bibliotecas
 			timeout (int): Tempo de Espera
 
-		Return: only %return
+		Return: Variável %return
 		"""
 
 		return run('JavaScript', locals())
@@ -600,8 +602,7 @@ class Code:
 			root   (bool): Usar Root
 
 		
-		Return: stout & sterr (dict)
+		Return: Erro & Saída (dict)
 		"""
 
 		return run('Shell', locals())
-		
