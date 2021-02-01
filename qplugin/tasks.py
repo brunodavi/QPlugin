@@ -587,3 +587,21 @@ class Code:
 		"""
 
 		return run('JavaScript', locals())
+
+
+	def Shell(self, command, timeout=0, root=False):
+		"""
+
+		Executa shell script no Android
+
+		Args:
+			command (str): Comandos do Shell
+			timeout (int): Tempo de Espera
+			root   (bool): Usar Root
+
+		
+		Return: stout & sterr (dict)
+		"""
+
+		return run('Shell', locals())
+		
