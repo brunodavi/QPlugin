@@ -17,4 +17,4 @@ DATABASE = f'{LOCAL}/database.db'
 isDroid = rsh('realpath /sdcard/Android')[0] == 0
 
 devices = rsh('adb devices')[1]
-devices = reg(devices, r'\n(\w+)\s+device')
+devices = reg(devices, r'\n(\w+|(?:\d+\.){3}\d+:\d+)\s+device')
