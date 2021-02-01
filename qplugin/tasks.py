@@ -215,7 +215,7 @@ class Alert:
 class App:
 
 
-	def Info(self, package, ignore='', unlanced=False, details=False):
+	def Info(self, package='', ignore='', unlanced=False, details=False):
 		"""
 
 		Obtém mais informações de apps
@@ -226,6 +226,8 @@ class App:
 
 			unlanced (bool): Iniciar pacotes não inicializáveis
 			details  (bool): Mostrar todos os detalhes
+
+		
 		"""
 
 		return run('Info', locals())
@@ -303,3 +305,90 @@ class App:
 		"""
 
 		return run('List', locals())
+
+	def Recents(self):
+		"""
+
+		Mostra as aplicações recentes
+		
+		"""
+
+		return run('Recents', locals())
+
+
+	def Test(self, data, mode='name'):
+		"""
+
+		Obtém informações sobre Apps/Calendário
+
+		Args:
+			data (str): Pacote/Data
+
+			mode (str): Calendário	
+									[ c_calendar ]
+									[ c_title    ]
+									[ c_note     ]
+									[ c_local    ]
+									[ c_start    ]
+									[ c_end      ]
+									[ c_allday   ]
+									[ c_exists   ]
+
+						Apps
+									[ name       ]
+									[ version    ]
+									[ this       ]
+
+		Return: str
+		"""
+
+		return run('Test', locals())
+
+
+class Audio:
+
+
+	def Accessibility(self):
+		pass
+
+	def Alarm(self):
+		pass
+		
+	def Bluetooth(self):
+		pass
+
+	def Call(self):
+		pass
+
+	def DTMF(self):
+		pass
+
+	def Effects(self):
+		pass
+
+	def Feedback(self):
+		pass
+
+	def Media(self):
+		pass
+
+	def Mic(self):
+		pass
+
+	def Mode(self):
+		pass
+
+	def Notify(self):
+		pass
+
+	def Ringer(self):
+		pass
+
+	def Ringtone(self):
+		pass
+
+	def Speaker(self):
+		pass
+
+	def System(self):
+		pass
