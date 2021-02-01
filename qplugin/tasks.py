@@ -291,12 +291,13 @@ class App:
 		Lista informações de aplicações
 
 		Args:
-			mode  (str): Tipo de informação listada	[ Package  ]
-								[ App      ]
-								[ Activity ]
-								[ Receiver ]
-								[ Services ]
-								[ Provider ]
+			mode  (str): Tipo de informação listada
+			[ Package  ]
+			[ App      ]
+			[ Activity ]
+			[ Receiver ]
+			[ Services ]
+			[ Provider ]
 			
 			match (str): Lista usando glob (!/*)
 		"""
