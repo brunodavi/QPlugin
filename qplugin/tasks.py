@@ -215,7 +215,7 @@ class Alert:
 class App:
 
 
-	def Info(self, package='', ignore='', unlanced=False, details=False):
+	def Info(self, package, ignore='', unlanced=False, details=False):
 		"""
 
 		Obtém mais informações de apps
@@ -348,47 +348,205 @@ class App:
 class Audio:
 
 
-	def Accessibility(self):
-		pass
+	def Accessibility(self, level, display=False, sound=False):
+		"""
 
-	def Alarm(self):
-		pass
+		Define o volume da acessibilidade
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('Accessibility', locals())
 		
-	def Bluetooth(self):
-		pass
 
-	def Call(self):
-		pass
+	def Alarm(self, level, display=False, sound=False):
+		"""
 
-	def DTMF(self):
-		pass
+		Define o volume do alarme
 
-	def Effects(self):
-		pass
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
 
-	def Feedback(self):
-		pass
+		return run('Alarm', locals())
+		
 
-	def Media(self):
-		pass
+	def Bluetooth(self, level, display=False, sound=False):
+		"""
 
-	def Mic(self):
-		pass
+		Define o volume do bluetooth
 
-	def Mode(self):
-		pass
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
 
-	def Notify(self):
-		pass
+		return run('Bluetooth', locals())
 
-	def Ringer(self):
-		pass
 
-	def Ringtone(self):
-		pass
+	def Call(self, level, display=False, sound=False):
+		"""
 
-	def Speaker(self):
-		pass
+		Define o volume de chamada
 
-	def System(self):
-		pass
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('Call', locals())
+
+
+	def DTMF(self, level, display=False, sound=False):
+		"""
+
+		Define o volume do DTMF
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('DTMF', locals())
+
+
+	def Effects(self, set=None):
+		"""
+
+		Ativa/Desativa Sons dos toques
+
+		Args:
+			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+		"""
+
+		return run('Effects', locals())
+
+
+	def Feedback(self, set=None):
+		"""
+
+		Ativa/Desativa alguns eventos de vibrações
+
+		Args:
+			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+		"""
+
+		return run('Feedback', locals())
+
+
+	def Media(self, level, display=False, sound=False):
+		"""
+
+		Define o volume de mídia
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('Media', locals())
+
+
+	def Mic(self, set=None):
+		"""
+
+		Ativa/Desativa Microfone
+
+		Args:
+			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+		"""
+
+		if set is True:
+			set = False
+
+		elif set is False:
+			set = True
+
+		return run('Mic', locals())
+
+
+	def Mode(self, set=None):
+		"""
+
+		Altera o padrão sonoro do dispositivo
+
+		Args:
+			set (bool): Define [ True=SOUND | False=MUTE | None=VIBRATE ]
+		"""
+
+		return run('Mode', locals())
+
+
+	def Notify(self, level, display=False, sound=False):
+		"""
+
+		Define o volume de notificações
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('Notify', locals())
+
+
+	def Ringer(self, level, display=False, sound=False):
+		"""
+
+		Define o volume de toque
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('Ringer', locals())
+
+
+	def Ringtone(self, sound, set=None):
+		"""
+
+		Define os toques padrões de chamadas, notificações e alarme
+
+		Args:
+			sound (str): Nome/Local do toque
+			set: (bool): Define [ True=ALARM | False=NOTIFY | None=RINGER ]
+
+		"""
+
+	def Speaker(self, set=None):
+		"""
+
+		Ativa/Desativa Viva Voz
+
+		Args:
+			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+		"""
+
+		return run('Speaker', locals())
+
+
+
+	def System(self, level, display=False, sound=False):
+		"""
+
+		Define o volume do sistema
+
+		Args:
+			level    (int): Nível do Volume
+			display (bool): Mostra o volume definido
+			sound   (bool): Tocar ao definir volume
+		"""
+
+		return run('System', locals())
