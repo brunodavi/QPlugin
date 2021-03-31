@@ -17,6 +17,14 @@ def run(act, pars):
     print('Nenhum android encontrado')
 
 
+def get():
+  while len(edfile(OUT)) == 0:
+    pass
+
+  out = edfile(OUT)
+  return eval(out)
+
+
 class Alert:
 	
 

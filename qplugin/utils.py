@@ -27,11 +27,3 @@ def edfile(path, write=None, append=False, encoding='utf-8'):
 
     file.write(write)
     file.close()
-
-
-def getout(path):
-  while len(edfile(path)) == 0:
-    pass
-
-  return eval(out)
-  
