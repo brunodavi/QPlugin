@@ -8,7 +8,7 @@
 
 ### Como funciona?
 
-* O python envia instruções pelo database.db para o QPlugin executar
+* O python envia instruções pelo data.json para o QPlugin executar
 * O qplugin é usado como biblioteca das ações disponíveis
 
 

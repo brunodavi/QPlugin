@@ -1,28 +1,20 @@
 from .import *
 
 
-def run(action, pars):
-	vals = getValues(pars)
+def run(act, pars):
+  cat = pars['self'].__name__
+  del pars[self]
 
-	if isDroid:
-		return SQL(DATABASE, action, vals)
+  if isDroid:
+    rsh(f'touch {OUT}')
+    edfile(JSON, f'{locals()}')
 
-	elif len(devices):
-		db = 'database.db'
+  elif len(devices) > 0:
+    rsh(f'adb shell touch {OUT}')
+    rsh(f'adb shell echo "{locals()}" > {JSON}')
 
-		SQL(db, action, vals, '012')
-
-		rsh(f'adb push {db} {DATABASE}')
-		size = getSize(DATABASE)
-		
-		while size == getSize(DATABASE):
-			continue
-
-		rsh(f'adb pull {DATABASE} {db}')
-		return SQL(db, action, vals, '3')
-
-	else:
-		exit('Nenhum dispositivo encontrado')
+  else:
+    print('Nenhum android encontrado')
 
 
 class Alert:
