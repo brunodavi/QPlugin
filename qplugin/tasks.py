@@ -21,8 +21,7 @@ def get():
   while len(edfile(OUT)) == 0:
     pass
 
-  out = edfile(OUT)
-  return eval(out)
+  return edfile(OUT)
 
 
 class Alert:
