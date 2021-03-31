@@ -2,7 +2,7 @@ from .import *
 
 
 def run(act, pars):
-  cat = pars['self'].__name__
+  cat = type(pars['self']).__name__
   del pars[self]
 
   if isDroid:
