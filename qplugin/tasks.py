@@ -6,11 +6,11 @@ def run(act, pars):
   del pars['self']
 
   if isDroid:
-    rsh(f'touch {OUT}')
+    rsh(f'echo "" > {OUT}')
     edfile(JSON, f'{locals()}')
 
   elif len(devices) > 0:
-    rsh(f'adb shell touch {OUT}')
+    rsh(f'adb shell echo "" > {OUT}')
     rsh(f'adb shell echo "{locals()}" > {JSON}')
 
   else:
