@@ -3,7 +3,7 @@ from .import *
 
 def run(act, pars):
   cat = type(pars['self']).__name__
-  del pars[self]
+  del pars['self']
 
   if isDroid:
     rsh(f'touch {OUT}')
