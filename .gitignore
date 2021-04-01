@@ -1,3 +1,4 @@
 qplugin/__pycache__/*
+.vscode/*
 data.json
 out.json

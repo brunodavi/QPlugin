@@ -12,6 +12,3 @@ alert.Toast('5')
 
 alert.Beep(9000, 100)
 alert.Beep(8000, 100)
-
-print(out)
-print(type(out))

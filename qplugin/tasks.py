@@ -118,7 +118,7 @@ class Alert:
 	    
 	    Args:
 	        title (str): Cancela notificações pelo título
-	                     Obs: Se não definido o tiítulo,
+	                     Obs: Se não definido o titulo,
 	                     remove todas as notificações
 	                     do QPlugin.
 	    """
@@ -217,7 +217,7 @@ class Alert:
 class App:
 
 
-	def Info(self, package, ignore='', unlanced=False, details=False):
+	def Info(self, package, ignore='' details=False):
 		"""
 
 		Obtém mais informações de apps
@@ -226,7 +226,6 @@ class App:
 			package   (str): Pacotes/Nome de Apps
 			ignore    (str): Pacotes Ignorados
 
-			unlanced (bool): Iniciar pacotes não inicializáveis
 			details  (bool): Mostrar todos os detalhes
 
 		Return: informações de apps (dict)
@@ -273,7 +272,7 @@ class App:
 		return run('Kill', locals())
 
 
-	def Launch(self, package, data=None, exclude_recents=False, new_start=False):
+	def Launch(self, package, data=None, recent=True, new_start=False):
 		"""
 
 		Iniciar uma aplicação
@@ -282,7 +281,7 @@ class App:
 			package          (str): Pacote/Classes de Apps
 			data             (str): Dados de entrada
 			
-			exclude_recents (bool): Excluir dos recentes
+			recent          (bool): Adicionar aos recentes
 			new_start       (bool): Nova inicialização
 		"""
 
@@ -343,7 +342,7 @@ class App:
 									[ version    ]
 									[ this       ]
 
-		Return: Infromações de Apps/Calendário (str)
+		Return: Informações de Apps/Calendário (str)
 		"""
 
 		return run('Test', locals())
