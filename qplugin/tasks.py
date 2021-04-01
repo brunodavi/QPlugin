@@ -8,10 +8,12 @@ def run(act, pars):
   if isDroid:
     rsh(f'echo -n "" > {OUT}')
     edfile(JSON, f'{locals()}')
+    return get()
 
   elif len(devices) > 0:
     rsh(f'adb shell echo -n "" > {OUT}')
     rsh(f'adb shell echo "{locals()}" > {JSON}')
+    return get()
 
   else:
     print('Nenhum android encontrado')
