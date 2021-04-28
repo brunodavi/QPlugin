@@ -11,8 +11,8 @@ def run(act, pars):
     return get()
 
   elif len(devices) > 0:
-    rsh(f'adb shell echo -n "" > {OUT}')
-    rsh(f'adb shell echo "{locals()}" > {JSON}')
+    adb(f'echo -n "" > {OUT}')
+    adb(f'echo "{locals()}" > {JSON}')
     return get()
 
   else:
@@ -20,11 +20,20 @@ def run(act, pars):
 
 
 def get():
-  while len(edfile(OUT)) == 0:
-    pass
+	if isDroid:
+		while len(edfile(OUT)) == 0:
+			pass
 
-  out = edfile(OUT)
-  return eval(out)
+		out = edfile(OUT)
+		return eval(out)
+
+	else:
+		while len(adb(f'cat {OUT}')) == 0:
+			pass
+
+		out = adb(f'cat {OUT}')
+		return out
+
 
 
 class Alert:
@@ -88,22 +97,22 @@ class Alert:
 	    return run('Morse', locals())
 	    
 	    
-	def Notify(self, title, text='', icon='', permanent=0, priority=3):
+	def Notify(self, title, text=' ', icon='', permanent=0, priority=3):
 	    """
 	    
 	    Mostra uma notificação
 	    
 	    Args:
-	        title     (str): Título da notificicação
+	        title     (str): Título da notificação
 	                         Obs: Se existir uma
 	                         notificação com o mesmo
 	                         título, ela é atualizada
 	                     
-	        text      (str): Texto da notficação
+	        text      (str): Texto da notificação
 	        icon      (str): Local do ícone
 	        
 	        permanent (int): 1 = Notificação permanente
-	                         0 = Notificaçaão padrão
+	                         0 = Notificação padrão
 	                         
 	        priority  (int): Nível de alerta da notificação [ 1 - 5 ]
 	    """
@@ -179,13 +188,13 @@ class Alert:
 	    return run('StopSay', locals())
 	
 	
-	def Flash(self, action=None):
+	def Flash(self, set=None):
 	    """
 	    
 	    Liga/Desliga Lanterna
 	    
 	    Args:
-	        action (str):  True: Liga a lanterna
+	        set    (str):  True: Liga a lanterna
 	                      False: Desliga a lanterna
 	                       None: Alterna entre ligado/desligado
 	    """
@@ -217,7 +226,7 @@ class Alert:
 class App:
 
 
-	def Info(self, package, ignore='' details=False):
+	def Info(self, package, ignore='', details=False):
 		"""
 
 		Obtém mais informações de apps
@@ -240,7 +249,7 @@ class App:
 		Ativa/Desativa a Câmera
 
 		Args:
-			status (bool): [ True=ON | False=OFF | None=TOOGLE ]
+			status (bool): [ True=ON | False=OFF | None=ON/OFF ]
 		"""
 
 		return run('Camera', locals())
@@ -607,3 +616,18 @@ class Code:
 		"""
 
 		return run('Shell', locals())
+
+
+class Display:
+
+	def Auto(self, set=None):
+		"""
+
+		Mudar o Brilho Automático
+
+		Args:
+			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+
+		"""
+
+		return run('Auto', locals())

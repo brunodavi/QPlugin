@@ -13,6 +13,9 @@ def rsh(cmd):
     from subprocess import getstatusoutput
     return getstatusoutput(cmd)
 
+def adb(cmd):
+    return rsh(f'''adb shell """{cmd}"""''')[-1]
+
 
 def edfile(path, write=None, append=False, encoding='utf-8'):
     if write == None:
