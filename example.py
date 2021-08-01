@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
-from qplugin.tasks import Audio
+from qplugin.test import Alert
 
-audio = Audio()
-audio.Media(15, True)
+toast = Alert().Toast('Teste')
+out = toast.finished()
+print(out is True)
+
+# Alert().Beep().call()

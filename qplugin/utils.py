@@ -1,32 +1,48 @@
 def reg(string, regex, replace=None):
-    from re import findall, sub
+	from re import findall, sub
 
-    if replace is None:
-        return findall(regex, string)
+	if replace is None:
+		return findall(regex, string)
 
-    else:
-        replace = sub(r'\$(\d+)', r'\\\1', replace)
-        return sub(regex, replace, string)
+	else:
+		replace = sub(r'\$(\d+)', r'\\\1', replace)
+		return sub(regex, replace, string)
 
 
 def rsh(cmd):
-    from subprocess import getstatusoutput
-    return getstatusoutput(cmd)
+	from subprocess import getstatusoutput
+	return getstatusoutput(cmd)
+
 
 def adb(cmd):
-    return rsh(f'''adb shell """{cmd}"""''')[-1]
+	return rsh(f'''adb shell """{cmd}"""''')[-1]
 
 
 def edfile(path, write=None, append=False, encoding='utf-8'):
-    if write == None:
-        file = open(path, 'r', encoding=encoding)
-        return file.read()
+	if write == None:
+		file = open(path, 'r', encoding=encoding)
+		return file.read()
 
-    elif append:
-        file = open(path, 'a', encoding=encoding)
+	elif append:
+		file = open(path, 'a', encoding=encoding)
 
-    else:
-        file = open(path, 'w', encoding=encoding)
+	else:
+		file = open(path, 'w', encoding=encoding)
 
-    file.write(write)
-    file.close()
+	file.write(write)
+	file.close()
+
+def autodict(*args):
+	from inspect import getouterframes, currentframe
+
+	get_rid_of = ['autodict(', ',', ')', '\n']
+	calling_code = getouterframes(currentframe())[1][4][0]
+	calling_code = calling_code[calling_code.index('autodict'):]
+
+	for garbage in get_rid_of:
+		calling_code = calling_code.replace(garbage, '')
+
+	var_names, var_values = calling_code.split(), args
+	vars_list = zip(var_names, var_values)
+
+	return { var_name: var_value for var_name, var_value in vars_list }
