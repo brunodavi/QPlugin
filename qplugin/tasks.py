@@ -93,93 +93,44 @@ class Alert:
 		def __init__(self, title: str='*'):
 			self.title = title
 			self.out = self._run()
+	
+	class Say(Stream):
+		def __init__(self, text: str, voice: str='default:default', pitch: int=5, speed: int=5, wait: bool=True):
+			self.text = text
+			self.voice = voice
+			self.pitch = pitch
+			self.speed = speed
+			self.wait = wait
 
-# 	def Say(self, text, voice='default:default', stream='media', pitch=5, speed=5, wait=True):
-# 	    """
+	class SayToFile(Stream):
+		def __init__(self, text: str, path: str, voice: str='default:default', pitch: int=5, speed: int=5, wait: bool=True):
+			self.text = text
+			self.path = path
+			self.voice = voice
+			self.pitch = pitch
+			self.speed = speed
+			self.wait = wait
 
-# 	    Fala o que for digitado
+	class StopSay(Task):
+		def __init__(self):
+			self.out = self._run()
 
-# 	    Args:
-# 	        text   (str): Texto do que é falado
-# 	        voice  (str): Voz do programa
+	class Flash(Task):
+		def __init__(self, set: bool=None):
+			self.set = set
+			self.out = self._run()
 
-# 	        stream (str): Saída do som            [   call     ]
-# 	                                              [   system   ]
-# 	                                              [   ringer   ]
-# 	                                              [   media    ]
-# 	                                              [   alarm    ]
-# 	                                              [   notify   ]
+	class Vibrate(Task):
+		def __init__(self, *pattern: int):
+			if not pattern:
+				exit(f'pattern empty -> {pattern}')
 
-# 	        pitch  (int): Tonalidade da voz       [   1 - 10   ]
-# 	        speed  (int): Velocidade da voz       [   1 - 10   ]  
+			pattern = (0, *pattern)
+			pattern = str(pattern)
+			pattern = pattern[1:-1]
 
-# 	        wait   (bool): Esperar até terminar                       
-# 	    """
-
-# 	    return run('Say', locals())
-
-
-# 	def SayToFile(self, text, local, voice='default:default', pitch=5, speed=5, wait=True):
-# 	    """
-
-# 	    Fala o que for digitado
-
-# 	    Args:
-# 	        text  (str): Texto do que é falado
-# 	        local (str): Local do arquivo
-# 	        voice (str): Voz do programa
-
-# 	        pitch (int): Tonalidade da voz       [   1 - 10   ]
-# 	        speed (int): Velocidade da voz       [   1 - 10   ]
-
-# 	        wait  (bool): Esperar até terminar                       
-# 	    """
-
-# 	    return run('SayToFile', locals())
-
-
-# 	def StopSay(self):
-# 	    """
-
-# 	    Para a função Say enquanto está em execução
-# 	    """
-
-# 	    return run('StopSay', locals())
-
-
-# 	def Flash(self, set=None):
-# 	    """
-
-# 	    Liga/Desliga Lanterna
-
-# 	    Args:
-# 	        set    (str):  True: Liga a lanterna
-# 	                      False: Desliga a lanterna
-# 	                       None: Alterna entre ligado/desligado
-# 	    """
-
-# 	    return run('Flash', locals())
-
-
-# 	def Vibrate(self, *pattern):
-# 		"""
-
-# 		Padrões de Vibres
-
-# 		Args:
-# 			pattern (tuple): tempo_de_espera,tempo_de_vibre
-# 		"""
-
-# 		if len(pattern) == 1:
-# 			pattern = (0,pattern[0])
-
-
-# 		pattern = str(pattern)
-
-# 		pattern = pattern.replace(' ', '')
-# 		pattern = pattern[1:-1]
-
-# 		return run('Vibrate', locals())
+			self.pattern = pattern
+			self.out = self._run()
 
 
 # class App:
