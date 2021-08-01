@@ -18,6 +18,12 @@ def adb(cmd):
 	return rsh(f'''adb shell """{cmd}"""''')[-1]
 
 
+def b64(string):
+	from base64 import b64encode
+	string = str(string).encode('utf-8')
+	return str(b64encode(string), 'utf-8')
+
+
 def edfile(path, write=None, append=False, encoding='utf-8'):
 	if write == None:
 		file = open(path, 'r', encoding=encoding)

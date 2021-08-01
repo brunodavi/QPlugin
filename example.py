@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 
-from qplugin.test import Alert
+from qplugin.tasks import Alert
+from time import sleep
 
-toast = Alert().Toast('Teste')
-out = toast.finished()
-print(out is True)
-
-# Alert().Beep().call()
+Alert().Notify('Teste', 'Notificação', priority=5)
+sleep(1)
+Alert().NotifyCancel()

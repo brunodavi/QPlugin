@@ -1,633 +1,592 @@
 from .import *
 
 
-def run(act, pars):
-  cat = type(pars['self']).__name__
-  del pars['self']
+class Task:
+	def _get(self):
+			if isDroid:
+				while len(edfile(OUT)) == 0: pass
+				out = edfile(OUT)
+				return out
 
-  if isDroid:
-    rsh(f'echo -n "" > {OUT}')
-    edfile(JSON, f'{locals()}')
-    return get()
+			else:
+				while len(adb(f'cat {OUT}')) == 0: pass
+				out = adb(f'cat {OUT}')
+				return out
 
-  elif len(devices) > 0:
-    adb(f'echo -n "" > {OUT}')
-    adb(f'echo "{locals()}" > {JSON}')
-    return get()
+	def _run(self):
+			cat, act = type(self).__qualname__.split('.')
+			pars = dict(**self.__dict__)
 
-  else:
-    print('Nenhum android encontrado')
+			data = autodict(cat, act, pars)
+			print(data)
+
+			if isDroid:
+				rsh(f'echo -n "" > {OUT}')
+				edfile(JSON, str(data))
+				return self._get()
+
+			elif len(devices) > 0:
+				adb(f'echo -n "" > {OUT}')
+				adb(f"echo -n '{b64(data)}' | base64 -d > {JSON}")
+				return self._get()
+
+			else:
+				print('Nenhum android encontrado')
 
 
-def get():
-	if isDroid:
-		while len(edfile(OUT)) == 0:
-			pass
+class Stream(Task):
+		def call(self):
+			self.stream = 'call'
+			return self._run()
 
-		out = edfile(OUT)
-		return eval(out)
+		def system(self):
+			self.stream = 'system'
+			return self._run()
 
-	else:
-		while len(adb(f'cat {OUT}')) == 0:
-			pass
+		def ringer(self):
+			self.stream = 'ringer'
+			return self._run()
 
-		out = adb(f'cat {OUT}')
-		return out
+		def media(self):
+			self.stream = 'media'
+			return self._run()
 
+		def alarm(self):
+			self.stream = 'alarm'
+			return self._run()
+
+		def notify(self):
+			self.stream = 'notify'
+			return self._run()
 
 
 class Alert:
-	
-
-	def Beep(self, frequency=8000, duration=1000, amplitude=50, stream='media'):
-	    """
-	    
-	    Executa uma frequência sonora
-	    
-	    Args:
-	        frequency (int): Frequência sonora       [ 20 - 16000 ]
-	        duration  (int): Duração em milesegundos [  1 - 10000 ]
-	        amplitude (int): Amplificação do som     [  1 -   100 ]
-	
-	        stream    (str): Saída do som            [   call     ]
-	                                                 [   system   ]
-	                                                 [   ringer   ]
-	                                                 [   media    ]
-	                                                 [   alarm    ]
-	                                                 [   notify   ]
-	    """
-	
-	    return run('Beep', locals())
-	
-	
-	def Toast(self, text, long=0):
-	    """
-	    
-	    Mostra uma mensagem na tela
-	    
-	    Args:
-	        text (str): Texto da mensagem
-	        
-	        long (int): 1: A mensagem demora mais
-	                    0: A mensagem demora menos
-	    """
-	    
-	    return run('Toast', locals())
-	    
-	
-	def Morse(self, text, frequency=4000, speed=80, amplitude=50, stream='media'):
-	    """
-	    
-	    Executa um coódigo morse
-	    
-	    Args:
-	        text       (str): Texto a ser pronunciado
-	        
-	        frequency  (int): Frequência sonora          [ 20 - 16000 ]
-	        speed      (int): Velocidade da reprodução   [  1 -   100 ]
-	        amplitude: (int): Amplificação do som        [  1 -   100 ]
-	        
-	        stream     (str): Saída do som               [   call     ]
-	                                                     [   system   ]
-	                                                     [   ringer   ]
-	                                                     [   media    ]
-	                                                     [   alarm    ]
-	                                                     [   notify   ]
-	    """
-	    return run('Morse', locals())
-	    
-	    
-	def Notify(self, title, text=' ', icon='', permanent=0, priority=3):
-	    """
-	    
-	    Mostra uma notificação
-	    
-	    Args:
-	        title     (str): Título da notificação
-	                         Obs: Se existir uma
-	                         notificação com o mesmo
-	                         título, ela é atualizada
-	                     
-	        text      (str): Texto da notificação
-	        icon      (str): Local do ícone
-	        
-	        permanent (int): 1 = Notificação permanente
-	                         0 = Notificação padrão
-	                         
-	        priority  (int): Nível de alerta da notificação [ 1 - 5 ]
-	    """
-	    
-	    return run('Notify', locals())
-	    
-	    
-	def NotifyCancel(self, title='*'):
-	    """
-	    
-	    Remove notificações
-	    
-	    Args:
-	        title (str): Cancela notificações pelo título
-	                     Obs: Se não definido o titulo,
-	                     remove todas as notificações
-	                     do QPlugin.
-	    """
-	    
-	    return run('NotifyCancel', locals())
-	    
-	    
-	def Say(self, text, voice='default:default', stream='media', pitch=5, speed=5, wait=True):
-	    """
-	    
-	    Fala o que for digitado
-	    
-	    Args:
-	        text   (str): Texto do que é falado
-	        voice  (str): Voz do programa
-	        
-	        stream (str): Saída do som            [   call     ]
-	                                              [   system   ]
-	                                              [   ringer   ]
-	                                              [   media    ]
-	                                              [   alarm    ]
-	                                              [   notify   ]
-	                                                 
-	        pitch  (int): Tonalidade da voz       [   1 - 10   ]
-	        speed  (int): Velocidade da voz       [   1 - 10   ]  
-	        
-	        wait   (bool): Esperar até terminar                       
-	    """
-	
-	    return run('Say', locals())
-	
-	
-	def SayToFile(self, text, local, voice='default:default', pitch=5, speed=5, wait=True):
-	    """
-	    
-	    Fala o que for digitado
-	    
-	    Args:
-	        text  (str): Texto do que é falado
-	        local (str): Local do arquivo
-	        voice (str): Voz do programa
-	        
-	        pitch (int): Tonalidade da voz       [   1 - 10   ]
-	        speed (int): Velocidade da voz       [   1 - 10   ]
-	         
-	        wait  (bool): Esperar até terminar                       
-	    """
-	
-	    return run('SayToFile', locals())
-	
-	
-	def StopSay(self):
-	    """
-	
-	    Para a função Say enquanto está em execução
-	    """
-	
-	    return run('StopSay', locals())
-	
-	
-	def Flash(self, set=None):
-	    """
-	    
-	    Liga/Desliga Lanterna
-	    
-	    Args:
-	        set    (str):  True: Liga a lanterna
-	                      False: Desliga a lanterna
-	                       None: Alterna entre ligado/desligado
-	    """
-	
-	    return run('Flash', locals())
-
-	
-	def Vibrate(self, *pattern):
-		"""
-
-		Padrões de Vibres
-
-		Args:
-			pattern (tuple): tempo_de_espera,tempo_de_vibre
-		"""
-
-		if len(pattern) == 1:
-			pattern = (0,pattern[0])
-
-
-		pattern = str(pattern)
-
-		pattern = pattern.replace(' ', '')
-		pattern = pattern[1:-1]
-
-		return run('Vibrate', locals())
-
-
-class App:
-
-
-	def Info(self, package, ignore='', details=False):
-		"""
-
-		Obtém mais informações de apps
-
-		Args:
-			package   (str): Pacotes/Nome de Apps
-			ignore    (str): Pacotes Ignorados
-
-			details  (bool): Mostrar todos os detalhes
-
-		Return: informações de apps (dict)
-		"""
-
-		return run('Info', locals())
-
-	
-	def Camera(self, status=None):
-		"""
-
-		Ativa/Desativa a Câmera
-
-		Args:
-			status (bool): [ True=ON | False=OFF | None=ON/OFF ]
-		"""
-
-		return run('Camera', locals())
-
-	
-	def Home(self, page=0, launcher=None):
-		"""
-
-		Inícia um launcher
-
-		Args:
-			page     (int): Página de início
-			launcher (str): Launcher que será inicializado
-		"""
-		
-		return run('Home', locals())
-
-
-	def Kill(self, package, root=False):
-		"""
-
-		Fechar um app a força
-
-		Args:
-			package  (str): Pacote do aplicativo
-			root    (bool): Usar root para fechar
-		"""
-
-		return run('Kill', locals())
-
-
-	def Launch(self, package, data=None, recent=True, new_start=False):
-		"""
-
-		Iniciar uma aplicação
-
-		Args:
-			package          (str): Pacote/Classes de Apps
-			data             (str): Dados de entrada
-			
-			recent          (bool): Adicionar aos recentes
-			new_start       (bool): Nova inicialização
-		"""
+	class Toast(Task):
+		def __init__(self, text: str, long: bool=False):
+			self.text = text
+			self.long = long
+			self.out = self._run()
 
-		return run('Launch', locals())
-
-	
-	def List(self, mode, match=None):
-		"""
-
-		Lista informações de aplicações
+	class Beep(Stream):
+		def __init__(self, frequency: int=8000, duration: int=1000, amplitude: int=50):
+			self.frequency = frequency
+			self.duration = duration
+			self.amplitude = amplitude
 
-		Args:
-			mode  (str): Tipo de informação listada
-			[ Package  ]
-			[ App      ]
-			[ Activity ]
-			[ Receiver ]
-			[ Services ]
-			[ Provider ]
-			
-			match (str): Lista usando glob (!/*)
+	class Morse(Stream):
+		def __init__(self, text: str, frequency: int=4000, speed: int=80, amplitude: int=50):
+			self.text = text
+			self.frequency = frequency
+			self.speed = speed
+			self.amplitude = amplitude
 
-		Return: Lista (list)
-		"""
+	class Notify(Task):
+		def __init__(self, title: str, text: str=' ', icon: str='', permanent: bool=False, priority: int=3):
+			self.title = title
+			self.text = text
+			self.icon = icon
+			self.permanent = permanent
+			self.priority = priority
+			self.out = self._run()
 
-		return run('List', locals())
+	class NotifyCancel(Task):
+		def __init__(self, title: str='*'):
+			self.title = title
+			self.out = self._run()
 
-	def Recents(self):
-		"""
+# 	def Say(self, text, voice='default:default', stream='media', pitch=5, speed=5, wait=True):
+# 	    """
 
-		Mostra as aplicações recentes
-		
-		"""
+# 	    Fala o que for digitado
 
-		return run('Recents', locals())
+# 	    Args:
+# 	        text   (str): Texto do que é falado
+# 	        voice  (str): Voz do programa
 
+# 	        stream (str): Saída do som            [   call     ]
+# 	                                              [   system   ]
+# 	                                              [   ringer   ]
+# 	                                              [   media    ]
+# 	                                              [   alarm    ]
+# 	                                              [   notify   ]
 
-	def Test(self, data, mode='name'):
-		"""
+# 	        pitch  (int): Tonalidade da voz       [   1 - 10   ]
+# 	        speed  (int): Velocidade da voz       [   1 - 10   ]  
 
-		Obtém informações sobre Apps/Calendário
+# 	        wait   (bool): Esperar até terminar                       
+# 	    """
 
-		Args:
-			data (str): Pacote/Data
+# 	    return run('Say', locals())
 
-			mode (str): Calendário	
-									[ c_calendar ]
-									[ c_title    ]
-									[ c_note     ]
-									[ c_local    ]
-									[ c_start    ]
-									[ c_end      ]
-									[ c_allday   ]
-									[ c_exists   ]
 
-						Apps
-									[ name       ]
-									[ version    ]
-									[ this       ]
+# 	def SayToFile(self, text, local, voice='default:default', pitch=5, speed=5, wait=True):
+# 	    """
 
-		Return: Informações de Apps/Calendário (str)
-		"""
+# 	    Fala o que for digitado
 
-		return run('Test', locals())
+# 	    Args:
+# 	        text  (str): Texto do que é falado
+# 	        local (str): Local do arquivo
+# 	        voice (str): Voz do programa
 
+# 	        pitch (int): Tonalidade da voz       [   1 - 10   ]
+# 	        speed (int): Velocidade da voz       [   1 - 10   ]
 
-class Audio:
+# 	        wait  (bool): Esperar até terminar                       
+# 	    """
 
+# 	    return run('SayToFile', locals())
 
-	def Accessibility(self, level, display=False, sound=False):
-		"""
 
-		Define o volume da acessibilidade
+# 	def StopSay(self):
+# 	    """
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 	    Para a função Say enquanto está em execução
+# 	    """
 
-		return run('Accessibility', locals())
-		
+# 	    return run('StopSay', locals())
 
-	def Alarm(self, level, display=False, sound=False):
-		"""
 
-		Define o volume do alarme
+# 	def Flash(self, set=None):
+# 	    """
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 	    Liga/Desliga Lanterna
 
-		return run('Alarm', locals())
-		
+# 	    Args:
+# 	        set    (str):  True: Liga a lanterna
+# 	                      False: Desliga a lanterna
+# 	                       None: Alterna entre ligado/desligado
+# 	    """
 
-	def Bluetooth(self, level, display=False, sound=False):
-		"""
+# 	    return run('Flash', locals())
 
-		Define o volume do bluetooth
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 	def Vibrate(self, *pattern):
+# 		"""
 
-		return run('Bluetooth', locals())
+# 		Padrões de Vibres
 
+# 		Args:
+# 			pattern (tuple): tempo_de_espera,tempo_de_vibre
+# 		"""
 
-	def Call(self, level, display=False, sound=False):
-		"""
+# 		if len(pattern) == 1:
+# 			pattern = (0,pattern[0])
 
-		Define o volume de chamada
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 		pattern = str(pattern)
 
-		return run('Call', locals())
+# 		pattern = pattern.replace(' ', '')
+# 		pattern = pattern[1:-1]
 
+# 		return run('Vibrate', locals())
 
-	def DTMF(self, level, display=False, sound=False):
-		"""
 
-		Define o volume do DTMF
+# class App:
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
 
-		return run('DTMF', locals())
+# 	def Info(self, package, ignore='', details=False):
+# 		"""
 
+# 		Obtém mais informações de apps
 
-	def Effects(self, set=None):
-		"""
+# 		Args:
+# 			package   (str): Pacotes/Nome de Apps
+# 			ignore    (str): Pacotes Ignorados
 
-		Ativa/Desativa Sons dos toques
+# 			details  (bool): Mostrar todos os detalhes
 
-		Args:
-			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
-		"""
+# 		Return: informações de apps (dict)
+# 		"""
 
-		return run('Effects', locals())
+# 		return run('Info', locals())
 
 
-	def Feedback(self, set=None):
-		"""
+# 	def Camera(self, status=None):
+# 		"""
 
-		Ativa/Desativa alguns eventos de vibrações
+# 		Ativa/Desativa a Câmera
 
-		Args:
-			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
-		"""
+# 		Args:
+# 			status (bool): [ True=ON | False=OFF | None=ON/OFF ]
+# 		"""
 
-		return run('Feedback', locals())
+# 		return run('Camera', locals())
 
 
-	def Media(self, level, display=False, sound=False):
-		"""
+# 	def Home(self, page=0, launcher=None):
+# 		"""
 
-		Define o volume de mídia
+# 		Inícia um launcher
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 		Args:
+# 			page     (int): Página de início
+# 			launcher (str): Launcher que será inicializado
+# 		"""
 
-		return run('Media', locals())
+# 		return run('Home', locals())
 
 
-	def Mic(self, set=None):
-		"""
+# 	def Kill(self, package, root=False):
+# 		"""
 
-		Ativa/Desativa Microfone
+# 		Fechar um app a força
 
-		Args:
-			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
-		"""
+# 		Args:
+# 			package  (str): Pacote do aplicativo
+# 			root    (bool): Usar root para fechar
+# 		"""
 
-		if set is True:
-			set = False
+# 		return run('Kill', locals())
 
-		elif set is False:
-			set = True
 
-		return run('Mic', locals())
+# 	def Launch(self, package, data=None, recent=True, new_start=False):
+# 		"""
 
+# 		Iniciar uma aplicação
 
-	def Mode(self, set=None):
-		"""
+# 		Args:
+# 			package          (str): Pacote/Classes de Apps
+# 			data             (str): Dados de entrada
 
-		Altera o padrão sonoro do dispositivo
+# 			recent          (bool): Adicionar aos recentes
+# 			new_start       (bool): Nova inicialização
+# 		"""
 
-		Args:
-			set (bool): Define [ True=SOUND | False=MUTE | None=VIBRATE ]
-		"""
+# 		return run('Launch', locals())
 
-		return run('Mode', locals())
 
+# 	def List(self, mode, match=None):
+# 		"""
 
-	def Notify(self, level, display=False, sound=False):
-		"""
+# 		Lista informações de aplicações
 
-		Define o volume de notificações
+# 		Args:
+# 			mode  (str): Tipo de informação listada
+# 			[ Package  ]
+# 			[ App      ]
+# 			[ Activity ]
+# 			[ Receiver ]
+# 			[ Services ]
+# 			[ Provider ]
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 			match (str): Lista usando glob (!/*)
 
-		return run('Notify', locals())
+# 		Return: Lista (list)
+# 		"""
 
+# 		return run('List', locals())
 
-	def Ringer(self, level, display=False, sound=False):
-		"""
+# 	def Recents(self):
+# 		"""
 
-		Define o volume de toque
+# 		Mostra as aplicações recentes
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 		"""
 
-		return run('Ringer', locals())
+# 		return run('Recents', locals())
 
 
-	def Ringtone(self, sound, set=None):
-		"""
+# 	def Test(self, data, mode='name'):
+# 		"""
 
-		Define os toques padrões de chamadas, notificações e alarme
+# 		Obtém informações sobre Apps/Calendário
 
-		Args:
-			sound (str): Nome/Local do toque
-			set: (bool): Define [ True=ALARM | False=NOTIFY | None=RINGER ]
+# 		Args:
+# 			data (str): Pacote/Data
 
-		"""
+# 			mode (str): Calendário
+# 									[ c_calendar ]
+# 									[ c_title    ]
+# 									[ c_note     ]
+# 									[ c_local    ]
+# 									[ c_start    ]
+# 									[ c_end      ]
+# 									[ c_allday   ]
+# 									[ c_exists   ]
 
-	def Speaker(self, set=None):
-		"""
+# 						Apps
+# 									[ name       ]
+# 									[ version    ]
+# 									[ this       ]
 
-		Ativa/Desativa Viva Voz
+# 		Return: Informações de Apps/Calendário (str)
+# 		"""
 
-		Args:
-			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
-		"""
+# 		return run('Test', locals())
 
-		return run('Speaker', locals())
 
+# class Audio:
 
 
-	def System(self, level, display=False, sound=False):
-		"""
+# 	def Accessibility(self, level, display=False, sound=False):
+# 		"""
 
-		Define o volume do sistema
+# 		Define o volume da acessibilidade
 
-		Args:
-			level    (int): Nível do Volume
-			display (bool): Mostra o volume definido
-			sound   (bool): Tocar ao definir volume
-		"""
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
 
-		return run('System', locals())
+# 		return run('Accessibility', locals())
 
 
-class Code:
+# 	def Alarm(self, level, display=False, sound=False):
+# 		"""
 
+# 		Define o volume do alarme
 
-	def ADB(self, command, ip, port, timeout=1):
-		"""
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
 
-		Executa comandos do adb shell
+# 		return run('Alarm', locals())
 
-		Args:
-			command (str): Commando (ex: ls /sdcard/)
-			     ip (str): IP do alvo (ex: 0.0.0.0)
 
-			    port(int): Porta conectada (ex: 5555)
-			timeout (int): Tempo de espera
+# 	def Bluetooth(self, level, display=False, sound=False):
+# 		"""
 
-		Return: Saída do ADB (str)
-		"""
+# 		Define o volume do bluetooth
 
-		return run('ADB', locals())
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
 
+# 		return run('Bluetooth', locals())
 
-	def JavaScript(self, code, lib='', timeout=45):
-		"""
 
-		Executa JavaScript do Tasker
+# 	def Call(self, level, display=False, sound=False):
+# 		"""
 
-		Args:
-			code    (str): Código JavaScript
-			lib     (str): Bibliotecas
-			timeout (int): Tempo de Espera
+# 		Define o volume de chamada
 
-		Return: Variável %return
-		"""
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
 
-		return run('JavaScript', locals())
+# 		return run('Call', locals())
 
 
-	def Shell(self, command, timeout=0, root=False):
-		"""
+# 	def DTMF(self, level, display=False, sound=False):
+# 		"""
 
-		Executa shell script no Android
+# 		Define o volume do DTMF
 
-		Args:
-			command (str): Comandos do Shell
-			timeout (int): Tempo de Espera
-			root   (bool): Usar Root
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
 
-		
-		Return: Erro & Saída (dict)
-		"""
+# 		return run('DTMF', locals())
 
-		return run('Shell', locals())
 
+# 	def Effects(self, set=None):
+# 		"""
 
-class Display:
+# 		Ativa/Desativa Sons dos toques
 
-	def Auto(self, set=None):
-		"""
+# 		Args:
+# 			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+# 		"""
 
-		Mudar o Brilho Automático
+# 		return run('Effects', locals())
 
-		Args:
-			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
 
-		"""
+# 	def Feedback(self, set=None):
+# 		"""
 
-		return run('Auto', locals())
+# 		Ativa/Desativa alguns eventos de vibrações
+
+# 		Args:
+# 			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+# 		"""
+
+# 		return run('Feedback', locals())
+
+
+# 	def Media(self, level, display=False, sound=False):
+# 		"""
+
+# 		Define o volume de mídia
+
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
+
+# 		return run('Media', locals())
+
+
+# 	def Mic(self, set=None):
+# 		"""
+
+# 		Ativa/Desativa Microfone
+
+# 		Args:
+# 			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+# 		"""
+
+# 		if set is True:
+# 			set = False
+
+# 		elif set is False:
+# 			set = True
+
+# 		return run('Mic', locals())
+
+
+# 	def Mode(self, set=None):
+# 		"""
+
+# 		Altera o padrão sonoro do dispositivo
+
+# 		Args:
+# 			set (bool): Define [ True=SOUND | False=MUTE | None=VIBRATE ]
+# 		"""
+
+# 		return run('Mode', locals())
+
+
+# 	def Notify(self, level, display=False, sound=False):
+# 		"""
+
+# 		Define o volume de notificações
+
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
+
+# 		return run('Notify', locals())
+
+
+# 	def Ringer(self, level, display=False, sound=False):
+# 		"""
+
+# 		Define o volume de toque
+
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
+
+# 		return run('Ringer', locals())
+
+
+# 	def Ringtone(self, sound, set=None):
+# 		"""
+
+# 		Define os toques padrões de chamadas, notificações e alarme
+
+# 		Args:
+# 			sound (str): Nome/Local do toque
+# 			set: (bool): Define [ True=ALARM | False=NOTIFY | None=RINGER ]
+
+# 		"""
+
+# 	def Speaker(self, set=None):
+# 		"""
+
+# 		Ativa/Desativa Viva Voz
+
+# 		Args:
+# 			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+# 		"""
+
+# 		return run('Speaker', locals())
+
+
+
+# 	def System(self, level, display=False, sound=False):
+# 		"""
+
+# 		Define o volume do sistema
+
+# 		Args:
+# 			level    (int): Nível do Volume
+# 			display (bool): Mostra o volume definido
+# 			sound   (bool): Tocar ao definir volume
+# 		"""
+
+# 		return run('System', locals())
+
+
+# class Code:
+
+
+# 	def ADB(self, command, ip, port, timeout=1):
+# 		"""
+
+# 		Executa comandos do adb shell
+
+# 		Args:
+# 			command (str): Commando (ex: ls /sdcard/)
+# 			     ip (str): IP do alvo (ex: 0.0.0.0)
+
+# 			    port(int): Porta conectada (ex: 5555)
+# 			timeout (int): Tempo de espera
+
+# 		Return: Saída do ADB (str)
+# 		"""
+
+# 		return run('ADB', locals())
+
+
+# 	def JavaScript(self, code, lib='', timeout=45):
+# 		"""
+
+# 		Executa JavaScript do Tasker
+
+# 		Args:
+# 			code    (str): Código JavaScript
+# 			lib     (str): Bibliotecas
+# 			timeout (int): Tempo de Espera
+
+# 		Return: Variável %return
+# 		"""
+
+# 		return run('JavaScript', locals())
+
+
+# 	def Shell(self, command, timeout=0, root=False):
+# 		"""
+
+# 		Executa shell script no Android
+
+# 		Args:
+# 			command (str): Comandos do Shell
+# 			timeout (int): Tempo de Espera
+# 			root   (bool): Usar Root
+
+
+# 		Return: Erro & Saída (dict)
+# 		"""
+
+# 		return run('Shell', locals())
+
+
+# class Display:
+
+# 	def Auto(self, set=None):
+# 		"""
+
+# 		Mudar o Brilho Automático
+
+# 		Args:
+# 			set (bool): Define [ True=ON | False=OFF | None=ON/OFF ]
+
+# 		"""
+
+# 		return run('Auto', locals())
