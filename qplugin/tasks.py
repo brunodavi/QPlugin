@@ -2,21 +2,32 @@ from .import *
 
 
 class Task:
+	def _getnames(self):
+		cat = type(self).__qualname__
+		cats = cat.split('.')
+
+		if len(cats) == 1:
+			act = current_method()
+			act = convert_name(act)
+		else:
+			cat, act = cats
+
+		return cat, act
+
 	def _get(self):
 			if isDroid:
 				while len(edfile(OUT)) == 0: pass
 				out = edfile(OUT)
-				return out
+				return eval(out)
 
 			else:
 				while len(adb(f'cat {OUT}')) == 0: pass
 				out = adb(f'cat {OUT}')
-				return out
+				return eval(out)
 
-	def _run(self, cat='', act='', **pars):
-			if not (cat or act or pars):
-				cat, act = type(self).__qualname__.split('.')
-				pars = dict(**self.__dict__)
+	def _run(self):
+			cat, act = self._getnames()
+			pars = dict(**self.__dict__)
 
 			data = autodict(cat, act, pars)
 			print(data)
@@ -62,213 +73,166 @@ class Stream(Task):
 
 
 class Alert(Task):
-	class Toast:
-		def __init__(self, text: str, long: bool=False):
-			self.text = text
-			self.long = long
-			self.out = self._run()
-
 	class Beep(Stream):
 		def __init__(self, frequency: int=8000, duration: int=1000, amplitude: int=50):
-			self.frequency = frequency
-			self.duration = duration
-			self.amplitude = amplitude
+			self.__dict__ = autodict(frequency, duration, amplitude)
+
 
 	class Morse(Stream):
 		def __init__(self, text: str, frequency: int=4000, speed: int=80, amplitude: int=50):
-			self.text = text
-			self.frequency = frequency
-			self.speed = speed
-			self.amplitude = amplitude
+			self.__dict__ = autodict(text, frequency, speed, amplitude)
 
-	class Notify:
-		def __init__(self, title: str, text: str=' ', icon: str='', permanent: bool=False, priority: int=3):
-			self.title = title
-			self.text = text
-			self.icon = icon
-			self.permanent = permanent
-			self.priority = priority
-			self.out = self._run()
 
-	class NotifyCancel:
-		def __init__(self, title: str='*'):
-			self.title = title
-			self.out = self._run()
-	
 	class Say(Stream):
 		def __init__(self, text: str, voice: str='default:default', pitch: int=5, speed: int=5, wait: bool=True):
-			self.text = text
-			self.voice = voice
-			self.pitch = pitch
-			self.speed = speed
-			self.wait = wait
+			self.__dict__ = autodict(text, voice, pitch, speed, wait)
+
 
 	class SayToFile(Stream):
 		def __init__(self, text: str, path: str, voice: str='default:default', pitch: int=5, speed: int=5, wait: bool=True):
-			self.text = text
-			self.path = path
-			self.voice = voice
-			self.pitch = pitch
-			self.speed = speed
-			self.wait = wait
+			self.__dict__ = autodict(text, path, voice, pitch, speed, wait)
 
-	class StopSay:
-		def __init__(self):
-			self.out = self._run()
 
-	class Flash:
-		def __init__(self, set: bool=None):
-			self.set = set
-			self.out = self._run()
-
-	class Vibrate:
-		def __init__(self, *pattern: int):
-			if not pattern:
-				exit(f'pattern empty -> {pattern}')
-
-			pattern = (0, *pattern)
-			pattern = str(pattern)
-			pattern = pattern[1:-1]
-
-			self.pattern = pattern
-			self.out = self._run()
-	
 	def toast(self, text: str, long: bool=False):
-		return self._run(type(self).__name__, 'Toast', text=text, long=long)
+		self.__dict__ = autodict(text, long)
+		return self._run()
 
 
-# class App:
+	def notify(self, title: str, text: str=' ', icon: str='', permanent: bool=False, priority: int=3):
+		self.__dict__ = autodict(title, text, icon, permanent, priority)
+		return self._run()
 
 
-# 	def Info(self, package, ignore='', details=False):
-# 		"""
-
-# 		Obtém mais informações de apps
-
-# 		Args:
-# 			package   (str): Pacotes/Nome de Apps
-# 			ignore    (str): Pacotes Ignorados
-
-# 			details  (bool): Mostrar todos os detalhes
-
-# 		Return: informações de apps (dict)
-# 		"""
-
-# 		return run('Info', locals())
+	def notify_cancel(self, title: str='*'):
+		self.__dict__ = autodict(title)
+		return self._run()
 
 
-# 	def Camera(self, status=None):
-# 		"""
-
-# 		Ativa/Desativa a Câmera
-
-# 		Args:
-# 			status (bool): [ True=ON | False=OFF | None=ON/OFF ]
-# 		"""
-
-# 		return run('Camera', locals())
+	def stop_say(self):
+		return self._run()
 
 
-# 	def Home(self, page=0, launcher=None):
-# 		"""
-
-# 		Inícia um launcher
-
-# 		Args:
-# 			page     (int): Página de início
-# 			launcher (str): Launcher que será inicializado
-# 		"""
-
-# 		return run('Home', locals())
+	def flash(self, set: bool=False):
+		self.__dict__ = autodict(set)
+		return self._run()
 
 
-# 	def Kill(self, package, root=False):
-# 		"""
+	def vibrate(self, *pattern: int):
+		if not pattern:
+			print(f'"pattern" está vazio')
+			return
 
-# 		Fechar um app a força
+		pattern = (0, *pattern)
+		pattern = str(pattern)
+		pattern = pattern[1:-1]
 
-# 		Args:
-# 			package  (str): Pacote do aplicativo
-# 			root    (bool): Usar root para fechar
-# 		"""
-
-# 		return run('Kill', locals())
-
-
-# 	def Launch(self, package, data=None, recent=True, new_start=False):
-# 		"""
-
-# 		Iniciar uma aplicação
-
-# 		Args:
-# 			package          (str): Pacote/Classes de Apps
-# 			data             (str): Dados de entrada
-
-# 			recent          (bool): Adicionar aos recentes
-# 			new_start       (bool): Nova inicialização
-# 		"""
-
-# 		return run('Launch', locals())
+		self.__dict__ = autodict(pattern)
+		return self._run()
 
 
-# 	def List(self, mode, match=None):
-# 		"""
+class App(Task):
+	class List(Task):
+		def __init__(self, match: str=None):
+			self.match = match
 
-# 		Lista informações de aplicações
+		def package(self):
+			self.mode = 'package'
+			return self._run()
 
-# 		Args:
-# 			mode  (str): Tipo de informação listada
-# 			[ Package  ]
-# 			[ App      ]
-# 			[ Activity ]
-# 			[ Receiver ]
-# 			[ Services ]
-# 			[ Provider ]
+		def app(self):
+			self.mode = 'app'
+			return self._run()
 
-# 			match (str): Lista usando glob (!/*)
+		def activity(self):
+			self.mode = 'activity'
+			return self._run()
 
-# 		Return: Lista (list)
-# 		"""
+		def receiver(self):
+			self.mode = 'receiver'
+			return self._run()
 
-# 		return run('List', locals())
+		def service(self):
+			self.mode = 'service'
+			return self._run()
 
-# 	def Recents(self):
-# 		"""
-
-# 		Mostra as aplicações recentes
-
-# 		"""
-
-# 		return run('Recents', locals())
+		def provider(self):
+			self.mode = 'provider'
+			return self._run()
 
 
-# 	def Test(self, data, mode='name'):
-# 		"""
+	class Test(Task):
+		def __init__(self, data: str):
+			self.__dict__ = autodict(data)
 
-# 		Obtém informações sobre Apps/Calendário
+# App
+		def name(self):
+			self.mode = 'name'
+			return self._run()
 
-# 		Args:
-# 			data (str): Pacote/Data
+		def version(self):
+			self.mode = 'version'
+			return self._run()
 
-# 			mode (str): Calendário
-# 									[ c_calendar ]
-# 									[ c_title    ]
-# 									[ c_note     ]
-# 									[ c_local    ]
-# 									[ c_start    ]
-# 									[ c_end      ]
-# 									[ c_allday   ]
-# 									[ c_exists   ]
+		def this(self):
+			self.mode = 'this'
+			return self._run()
 
-# 						Apps
-# 									[ name       ]
-# 									[ version    ]
-# 									[ this       ]
+# Calendar
+		def c_calendar(self):
+			self.mode = 'c_calendar'
+			return self._run()
 
-# 		Return: Informações de Apps/Calendário (str)
-# 		"""
+		def c_title(self):
+			self.mode = 'c_title'
+			return self._run()
 
-# 		return run('Test', locals())
+		def c_note(self):
+			self.mode = 'c_note'
+			return self._run()
+
+		def c_local(self):
+			self.mode = 'c_local'
+			return self._run()
+
+		def c_start(self):
+			self.mode = 'c_start'
+			return self._run()
+
+		def c_end(self):
+			self.mode = 'c_end'
+			return self._run()
+
+		def c_allday(self):
+			self.mode = 'c_allday'
+			return self._run()
+
+		def c_exists(self):
+			self.mode = 'c_exists'
+			return self._run()
+
+
+	def info(self, package: str, ignorem: str='', details: bool=False):
+		self.__dict__ = autodict(package, ignorem, details)
+		return self._run()
+	
+	def camera(self, status: bool=None):
+		self.__dict__ = autodict(status)
+		return self._run()
+
+	def home(self, page: int, launcher: None):
+		self.__dict__ = autodict(page, launcher)
+		return self._run()
+
+	def kill(self, package: str, root: bool=False):
+		self.__dict__ = autodict(package, root)
+		return self._run()
+
+	def launch(self, package: str, data: str='', recent: bool=True, new_start: bool=False):
+		self.__dict__ = autodict(package, data, recent, new_start)
+		return self._run()
+
+	def recents(self):
+		return self._run()
 
 
 # class Audio:

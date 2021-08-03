@@ -24,6 +24,15 @@ def b64(string):
 	return str(b64encode(string), 'utf-8')
 
 
+def current_method(depth=3):
+	from sys import _getframe
+	return _getframe(depth).f_code.co_name
+
+
+def convert_name(string):
+	return string.title().replace('_', '')
+
+
 def edfile(path, write=None, append=False, encoding='utf-8'):
 	if write == None:
 		file = open(path, 'r', encoding=encoding)
