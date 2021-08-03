@@ -38,6 +38,7 @@ def edfile(path, write=None, append=False, encoding='utf-8'):
 	file.write(write)
 	file.close()
 
+
 def autodict(*args):
 	from inspect import getouterframes, currentframe
 

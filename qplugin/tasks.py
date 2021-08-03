@@ -13,9 +13,10 @@ class Task:
 				out = adb(f'cat {OUT}')
 				return out
 
-	def _run(self):
-			cat, act = type(self).__qualname__.split('.')
-			pars = dict(**self.__dict__)
+	def _run(self, cat='', act='', **pars):
+			if not (cat or act or pars):
+				cat, act = type(self).__qualname__.split('.')
+				pars = dict(**self.__dict__)
 
 			data = autodict(cat, act, pars)
 			print(data)
@@ -60,8 +61,8 @@ class Stream(Task):
 			return self._run()
 
 
-class Alert:
-	class Toast(Task):
+class Alert(Task):
+	class Toast:
 		def __init__(self, text: str, long: bool=False):
 			self.text = text
 			self.long = long
@@ -80,7 +81,7 @@ class Alert:
 			self.speed = speed
 			self.amplitude = amplitude
 
-	class Notify(Task):
+	class Notify:
 		def __init__(self, title: str, text: str=' ', icon: str='', permanent: bool=False, priority: int=3):
 			self.title = title
 			self.text = text
@@ -89,7 +90,7 @@ class Alert:
 			self.priority = priority
 			self.out = self._run()
 
-	class NotifyCancel(Task):
+	class NotifyCancel:
 		def __init__(self, title: str='*'):
 			self.title = title
 			self.out = self._run()
@@ -111,16 +112,16 @@ class Alert:
 			self.speed = speed
 			self.wait = wait
 
-	class StopSay(Task):
+	class StopSay:
 		def __init__(self):
 			self.out = self._run()
 
-	class Flash(Task):
+	class Flash:
 		def __init__(self, set: bool=None):
 			self.set = set
 			self.out = self._run()
 
-	class Vibrate(Task):
+	class Vibrate:
 		def __init__(self, *pattern: int):
 			if not pattern:
 				exit(f'pattern empty -> {pattern}')
@@ -131,6 +132,9 @@ class Alert:
 
 			self.pattern = pattern
 			self.out = self._run()
+	
+	def toast(self, text: str, long: bool=False):
+		return self._run(type(self).__name__, 'Toast', text=text, long=long)
 
 
 # class App:
